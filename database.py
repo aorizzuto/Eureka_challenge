@@ -41,7 +41,7 @@ class DataBase():
 
             ## Para pruebas ####################################
             """Saving information in txt file instead using database just for tests."""
-            with open('Eureka_challenge/archivo.txt','a') as file_BBDD:
+            with open('archivo.txt','a') as file_BBDD:
                 values=' '.join([name, last_name, email, key])
                 file_BBDD.write(values+'\n')
 
@@ -65,7 +65,7 @@ class DataBase():
 
             ## Para pruebas ####################################
             """Saving information in txt file instead using database just for tests."""
-            with open('Eureka_challenge/archivo.txt','r') as file_BBDD:
+            with open('archivo.txt','r') as file_BBDD:
                 for line in file_BBDD:
                     if key in line:
                         return True
@@ -90,7 +90,7 @@ class DataBase():
 
             ## Para pruebas ####################################
             """Saving information in txt file instead using database just for tests."""
-            with open('Eureka_challenge/archivo.txt','r') as file_BBDD:
+            with open('archivo.txt','r') as file_BBDD:
                 for line in file_BBDD:
                     if rec['email'] in line:
                         return True
@@ -115,7 +115,7 @@ class DataBase():
 
             ## Para pruebas ####################################
             """Saving information in txt file instead using database just for tests."""
-            with open('Eureka_challenge/archivo.txt','r') as file_BBDD:
+            with open('archivo.txt','r') as file_BBDD:
                 for line in file_BBDD:
                     if rec['email'] in line:
                         return line.split(' ')[-1]
