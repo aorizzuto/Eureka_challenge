@@ -38,7 +38,7 @@ def get_info():
 
     dct = request.args.to_dict()                                    # Get arguments
 
-    if cnst.checkParameters(dct):                                   # Check if arguments are the same as the expected ones
+    if cnst.checkParameters(dct,cnst.GET_KEYS):                     # Check if arguments are the same as the expected ones
         if cnst.checkKey(dct['apikey']):
             logger.info("All parameters are OK.")                               
             URL=cnst.createURL(dct)                                 # URL generation to get info required
@@ -59,14 +59,17 @@ def update_record():
     msg = msgs.Messages()                                           # Object creation.
 
     records = json.loads(request.data)                              # Get data from post
-    check = all([x in records.keys() for x in cnst.POST_KEYS])      # Check if expected parmeters are passed
 
-    if check:
+    if cnst.checkParameters(records,cnst.POST_KEYS):                # Check if arguments are the same as the expected ones
         logger.info("All parameters are OK.")
-        key = fc.getKey(records)                                    # Get new key
-        logger.info("Saving user ...\n")
-        cnst.saveParameters(records, key)                           # Save info in database/file
-        return msg.POSTReturnSuccess(key)                           # Return success message
+        if not cnst.existUser(records):
+            key = fc.getKey(records,user=False)                          # Get new key
+            logger.info("Saving user ...\n")
+            cnst.saveParameters(records, key)                       # Save info in database/file
+            return msg.POSTReturnSuccess(key)                       # Return success message
+        else:
+            key = fc.getKey(records,user=True)
+            return msg.POSTReturnUserExist(key)                     # User already exist
     return msg.POSTReturnError(cnst.POST_KEYS)                      # Else return error message
 
 ############################################################################

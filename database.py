@@ -41,7 +41,7 @@ class DataBase():
 
             ## Para pruebas ####################################
             """Saving information in txt file instead using database just for tests."""
-            with open('archivo.txt','a') as file_BBDD:
+            with open('Eureka_challenge/archivo.txt','a') as file_BBDD:
                 values=' '.join([name, last_name, email, key])
                 file_BBDD.write(values+'\n')
 
@@ -55,16 +55,68 @@ class DataBase():
                 row = cursor.fetchall()
                 conn.close()
                 self.logger.info("Key found!")
-                return row[0][0]
+                return True
             except Exception as e:
                 self.logger.error("Error - Could not found the key: {}".format(e))
+                return False
         else:
             self.logger.error("Error - Could not stablish connection.")
-
+            #return False
 
             ## Para pruebas ####################################
             """Saving information in txt file instead using database just for tests."""
-            with open('archivo.txt','r') as file_BBDD:
+            with open('Eureka_challenge/archivo.txt','r') as file_BBDD:
                 for line in file_BBDD:
                     if key in line:
                         return True
+            return False
+
+    def checkUser(self, rec):
+        conn = self.getConnection()
+        
+        if conn != False:
+            try:
+                cursor = conn.cursor()        
+                cursor.execute(cte.QRY_CHECK_USER,rec['email']) # Check the user with his email
+                row = cursor.fetchall()
+                conn.close()
+                return True
+            except Exception as e:
+                self.logger.error("Error - Could not found the key: {}".format(e))
+                return False
+        else:
+            self.logger.error("Error - Could not stablish connection.")
+            #return False
+
+            ## Para pruebas ####################################
+            """Saving information in txt file instead using database just for tests."""
+            with open('Eureka_challenge/archivo.txt','r') as file_BBDD:
+                for line in file_BBDD:
+                    if rec['email'] in line:
+                        return True
+            return False
+
+    def returnKey(self, rec):
+        conn = self.getConnection()
+        
+        if conn != False:
+            try:
+                cursor = conn.cursor()        
+                cursor.execute(cte.QRY_RETURN_KEY,rec['email']) # Check the user with his email
+                row = cursor.fetchall()
+                conn.close()
+                return row[0][0]
+            except Exception as e:
+                self.logger.error("Error - Could not found the key: {}".format(e))
+                return False
+        else:
+            self.logger.error("Error - Could not stablish connection.")
+            #return False
+
+            ## Para pruebas ####################################
+            """Saving information in txt file instead using database just for tests."""
+            with open('Eureka_challenge/archivo.txt','r') as file_BBDD:
+                for line in file_BBDD:
+                    if rec['email'] in line:
+                        return line.split(' ')[-1]
+            return False

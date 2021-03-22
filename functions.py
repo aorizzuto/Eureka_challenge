@@ -1,10 +1,16 @@
 import pandas as pd
 import json
+import database
 
-def getKey(json):
-    """In here we need to connect to the WS, pass parameters and get a new key"""
-    key = "X86NOH6II01P7R24" # Tests
+def getKey(json,user):
+    if not user:
+        """In here we need to connect to the WS, pass parameters and get a new key"""
+        key = "X86NOH6II01P7R24" # Tests
+    else:
+        db = database.DataBase()
+        key = db.returnKey(json)
     return key
+
 
 def getNumberOfRowsToShow(res, args):
     try:

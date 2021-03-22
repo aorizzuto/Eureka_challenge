@@ -88,3 +88,15 @@ TEST: Logging
 2021-03-21 13:19:58,541 - ERROR - Error - getConnection: ('01000', "[01000] [unixODBC][Driver Manager]Can't open lib 'SQL Server' : file not found (0) (SQLDriverConnect)")
 2021-03-21 13:19:58,542 - ERROR - Error - Could not stablish connection.
 2021-03-21 13:19:58,543 - INFO - Your KEY is: X86NOH6II01P7R24
+
+--------------------------------------------------------------------------------------------------------
+TEST: Add existing user
+    curl -i -H "Content-Type: application/json" -X POST -d '{"name":"Alejandro", "last_name":"Rizzuto", "email":"aleorizzuto@gmail.com"}' "http://127.0.0.1:5000/stockmarket"
+Response:
+    HTTP/1.0 200 OK
+    Content-Type: text/html; charset=utf-8
+    Content-Length: 52
+    Server: Werkzeug/1.0.1 Python/3.8.5
+    Date: Mon, 22 Mar 2021 13:54:22 GMT
+
+    User already exist!. Your key is: X86NOH6II01P7R24

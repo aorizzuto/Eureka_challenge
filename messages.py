@@ -4,7 +4,7 @@ class Messages():
     logger = log.logger
 
     def POSTReturnError(self,keys):
-        text = "Parameters to get a new key should be {}\n\n".format(keys)
+        text = "Parameters to get a new key should be {}\n".format(keys)
         self.logger.error(text)
         return text
 
@@ -20,5 +20,10 @@ class Messages():
 
     def GETReturnErrorInKey(self):
         text = "Error: Key not found.\n"
+        self.logger.error(text)
+        return text
+
+    def POSTReturnUserExist(self, key):
+        text = "User already exist!. Your key is: {}\n".format(key)
         self.logger.error(text)
         return text

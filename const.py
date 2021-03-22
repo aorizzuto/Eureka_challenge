@@ -31,6 +31,11 @@ class Parametros():
         db = database.DataBase()
         return db.getKey(key)
     
-    def checkParameters(self,dct):
+    def checkParameters(self,dct,keys):
         self.logger.info("checkParameters method called.")
-        return all([x in dct.keys() for x in self.GET_KEYS])       # Check if expected parmeters are passed
+        return all([x in dct.keys() for x in keys])       # Check if expected parmeters are passed
+
+    def existUser(self,rec):
+        self.logger.info("existUser method called.")
+        db = database.DataBase()
+        return db.checkUser(rec)
