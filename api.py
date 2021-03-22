@@ -39,14 +39,14 @@ def get_info():
     dct = request.args.to_dict()                                    # Get arguments
 
     if cnst.checkParameters(dct,cnst.GET_KEYS):                     # Check if arguments are the same as the expected ones
-        if cnst.checkKey(dct['apikey']):
+        if cnst.checkKey(dct['apikey']):                            # Check if key is a valid one
             logger.info("All parameters are OK.")                               
             URL=cnst.createURL(dct)                                 # URL generation to get info required
             res = requests.get(URL)                                 # Get information from URL
             result = fc.getNumberOfRowsToShow(res, request.args)    # Get number of rows if exist, else show everything
             return jsonify(result)                                  # Return information
-        return msg.GETReturnErrorInKey()
-    return msg.GETReturnError(cnst.GET_KEYS)
+        return msg.GETReturnErrorInKey()                            # Return error if key not exist in database
+    return msg.GETReturnError(cnst.GET_KEYS)                        # Return error if arguments are not the expected ones
 
 ############################################################################
 
@@ -62,13 +62,13 @@ def update_record():
 
     if cnst.checkParameters(records,cnst.POST_KEYS):                # Check if arguments are the same as the expected ones
         logger.info("All parameters are OK.")
-        if not cnst.existUser(records):
-            key = fc.getKey(records,user=False)                          # Get new key
+        if not cnst.existUser(records):                             # Check if user already exist
+            key = fc.getKey(records,user=False)                     # Get new key
             logger.info("Saving user ...\n")
             cnst.saveParameters(records, key)                       # Save info in database/file
             return msg.POSTReturnSuccess(key)                       # Return success message
         else:
-            key = fc.getKey(records,user=True)
+            key = fc.getKey(records,user=True)                      # Get existing key for user
             return msg.POSTReturnUserExist(key)                     # User already exist
     return msg.POSTReturnError(cnst.POST_KEYS)                      # Else return error message
 

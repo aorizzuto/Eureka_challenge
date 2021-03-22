@@ -1,3 +1,5 @@
+"""Logging library."""
+
 import logging
 
 # Create a custom logger

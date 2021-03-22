@@ -3,6 +3,7 @@ import DBConst as cte
 import log
 
 class DataBase():
+    """Class to handle database functions and queries."""
 
     logger = log.logger
 
@@ -10,20 +11,20 @@ class DataBase():
         """Método para conectarse a la base."""
         try:
             conn = pyodbc.connect(cte.CONNECTION)
-            
             cursor = conn.cursor()
-            cursor.execute("SELECT @@version;")
+            cursor.execute("SELECT @@version;")     # Execute query to check connectivity
             return conn
         except Exception as e:
             self.logger.error("Error - getConnection: {}".format(e))
             return False
 
     def saveRecord(self,rec,key):
-        name = rec['name']
+        """Save a new record."""
+        name = rec['name']                  # Get information
         last_name = rec['last_name']
         email = rec['email']
         
-        conn = self.getConnection()
+        conn = self.getConnection()         # Connect to database
         
         if conn != False:
             try:
@@ -46,6 +47,7 @@ class DataBase():
                 file_BBDD.write(values+'\n')
 
     def getKey(self,key):
+        """Get key from database."""
         conn = self.getConnection()
         
         if conn != False:
@@ -55,7 +57,7 @@ class DataBase():
                 row = cursor.fetchall()
                 conn.close()
                 self.logger.info("Key found!")
-                return True
+                return True if row[0][0] is not "" else False
             except Exception as e:
                 self.logger.error("Error - Could not found the key: {}".format(e))
                 return False
@@ -72,6 +74,7 @@ class DataBase():
             return False
 
     def checkUser(self, rec):
+        """Check if user exist in database."""
         conn = self.getConnection()
         
         if conn != False:
@@ -80,7 +83,7 @@ class DataBase():
                 cursor.execute(cte.QRY_CHECK_USER,rec['email']) # Check the user with his email
                 row = cursor.fetchall()
                 conn.close()
-                return True
+                return True if row[0][0] is not "" else False
             except Exception as e:
                 self.logger.error("Error - Could not found the key: {}".format(e))
                 return False
@@ -97,6 +100,7 @@ class DataBase():
             return False
 
     def returnKey(self, rec):
+        """Get the key for the user."""
         conn = self.getConnection()
         
         if conn != False:

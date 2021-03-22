@@ -3,6 +3,7 @@ import json
 import database
 
 def getKey(json,user):
+    """Get key from user."""
     if not user:
         """In here we need to connect to the WS, pass parameters and get a new key"""
         key = "X86NOH6II01P7R24" # Tests
@@ -13,6 +14,7 @@ def getKey(json,user):
 
 
 def getNumberOfRowsToShow(res, args):
+    """Get the number of rows specified in the args."""
     try:
         # pagination
         rows = args['records']              # Taking number of rows to show
